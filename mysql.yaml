@@ -1,6 +1,8 @@
 - name: configuring mysql 
   hosts: mysql
   become: yes
+  mysql_root_password: ExpenseApp@1
+  login_host: mysql.kondarao.online
   tasks:
   - name: installing mysql in server
     ansible.builtin.package:
@@ -12,3 +14,18 @@
       name: mysqld
       state: started
       enabled: yes
+
+  - name: setting credentials to database
+    community.mysql.mysql_info:
+      login_user: root
+      login_password: "{{mysql_root_password}}"
+      login_host: "{{login_host}}"
+      ignore_errors: true
+    register: mysqlinfo
+
+  - name: print the mysqlinfo
+    ansible.builtin.debug:
+      msg: "{{mysqlinfo}}"
+  # - name: setup my sql password
+  #   ansible.builtin.command: "mysql_secure_installation --set-root-pass{{login_password}}"
+  #   when: mysqlinfo.failed is true
