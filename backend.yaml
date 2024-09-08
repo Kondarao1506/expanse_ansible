@@ -10,6 +10,7 @@
     ansible.builtin.pip:
       name:
       - PyMySQL
+      - cryptography
       executable: pip3.9
   - name: disable nodejs in backend server
     ansible.builtin.command: dnf module disable nodejs -y
@@ -24,7 +25,7 @@
     loop:
     - nodejs
     - mysql
-    - cryptography
+
   - name: creating expanse user
     ansible.builtin.user:
       name: expanse
