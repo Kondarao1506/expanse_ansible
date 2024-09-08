@@ -38,7 +38,7 @@
       dest: /tmp/backend.zip
 
   - name: extract the zip file
-    ansible.builtin.unarchhive:
+    ansible.builtin.unarchive:
       src: /tmp/backend.zip
       dest: /app
       remote_src: yes
