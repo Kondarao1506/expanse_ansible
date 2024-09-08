@@ -1,0 +1,16 @@
+- name: configuring backend
+  hosts: backend
+  tasks:
+  - name: disable nodejs in backend server
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs 
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: installing nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+  - name: creating expanse user
+    ansible.builtin.user:
+      name: expanse
