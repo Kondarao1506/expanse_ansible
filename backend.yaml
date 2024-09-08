@@ -24,6 +24,7 @@
     loop:
     - nodejs
     - mysql
+    - cryptography
   - name: creating expanse user
     ansible.builtin.user:
       name: expanse
