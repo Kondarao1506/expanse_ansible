@@ -1,8 +1,9 @@
 - name: configuring mysql 
   hosts: mysql
   become: yes
-  mysql_root_password: ExpenseApp@1
-  login_host: mysql.kondarao.online
+  vars:
+    mysql_root_password: ExpenseApp@1
+    login_host: mysql.kondarao.online 
   tasks:
   - name: installing mysql in server
     ansible.builtin.package:
