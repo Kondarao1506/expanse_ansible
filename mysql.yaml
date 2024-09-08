@@ -18,7 +18,7 @@
 
   - name: installing pip boto3 and botocore
     ansible.builtin.pip:
-      -PyMySQL
+    - PyMySQL
     executable: pip3.9
 
   - name: setting credentials to database
