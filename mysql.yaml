@@ -5,6 +5,12 @@
     mysql_root_password: ExpenseApp@1
     login_host: mysql.kondarao.online 
   tasks:
+
+  - name: installing pip boto3 and botocore
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+    executable: pip3.9
   - name: installing mysql in server
     ansible.builtin.package:
       name: mysql-server
@@ -16,11 +22,7 @@
       state: started
       enabled: yes
 
-  - name: installing pip boto3 and botocore
-    ansible.builtin.pip:
-      name:
-      - PyMySQL
-    executable: pip3.9
+  
 
   - name: setting credentials to database
     community.mysql.mysql_info:
