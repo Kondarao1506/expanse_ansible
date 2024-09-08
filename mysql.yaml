@@ -2,6 +2,7 @@
   hosts: mysql
   become: yes
   tasks:
+    
     ansible.builtin.package:
       name: mysql_server
-      state:  present.
+      state:  present
