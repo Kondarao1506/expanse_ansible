@@ -1,7 +1,16 @@
 - name: configuring backend
   hosts: backed
   become: yes
+  vars:
+    mysql_root_password: ExpenseApp@1
+    login_host: mysql.kondarao.online 
   tasks:
+
+  - name: "installing pip mysql"
+    ansible.builtin.pip:
+      name:
+      - PyMySQL
+      executable: pip3.9
   - name: disable nodejs in backend server
     ansible.builtin.command: dnf module disable nodejs -y
 
@@ -10,8 +19,54 @@
 
   - name: installing nodejs
     ansible.builtin.package:
-      name: nodejs
+      name: "{{item}}"
       state: present
+    loop:
+    - nodejs
+    - mysql
   - name: creating expanse user
     ansible.builtin.user:
       name: expanse
+  - name: create app directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+  
+  - name: download the backend code
+    ansible.buitin.get_url:
+      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      dest: /tmp/backend.zip
+
+  - name: extract the zip file
+    ansible.builtin.unarchhive:
+      src: /tmp/backend.zip
+      dest: /app
+      remote_src: yes
+
+  - name: installing dependencies
+    ansible.builtin.command: npm install
+    args:
+      chdir: /app
+
+  - name: copy backend service file to dest
+    ansible.builtin.copy:
+     src: backend.service
+     dest: /etc/systemd/system/backend.service
+
+  - name: import mysql data
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{mysql_root_password}}"
+      login_host: "{{login_host}}"
+      target: /app/schema/backend.sql
+      name: all
+      state: import
+
+  - name: demon reload
+    ansible.builtin.systemd_service:
+      demon_reload: true
+      state: restarted
+      name: backend
+
+
+    
