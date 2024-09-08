@@ -6,3 +6,9 @@
     ansible.builtin.package:
       name: mysql-server
       state:  present
+
+  - name: starting server
+    ansible.builtin.service:
+      name: mysqld
+      state: present
+      enabled: yes
