@@ -16,6 +16,11 @@
       state: started
       enabled: yes
 
+  - name: installing pip boto3 and botocore
+    ansible.builtin.pip:
+      -PyMySQL
+    executable: pip3.9
+
   - name: setting credentials to database
     community.mysql.mysql_info:
       login_user: root
